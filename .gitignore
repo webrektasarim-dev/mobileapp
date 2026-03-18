@@ -1,0 +1,35 @@
+# Ortam ve gizliler (asla commit etmeyin)
+.env
+.env.*
+!.env.example
+
+# Bağımlılıklar
+node_modules/
+
+# Backend (NestJS)
+backend/dist/
+backend/coverage/
+
+# Admin (Vite)
+admin/dist/
+
+# Flutter
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+*.iml
+
+# IDE / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
+npm-debug.log*
+
+# Prisma (eski çıktı yolları)
+**/generated/prisma
