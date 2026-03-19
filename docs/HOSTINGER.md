@@ -61,12 +61,50 @@ npm run db:seed
 
 ## 5. Uygulamayı çalıştırma
 
-- **Başlangıç komutu** (Hostinger panelinde): örn. `node dist/main.js` veya `npm run start:prod`
-- Önce `npm run build` ile derleyin; çıktı `dist/` olmalı.
+- **Kök dizin (önemli):**  
+  - **A)** Repo kökü (`mobileapp/`) → **Build komutu:** sadece **`npm run build`** (kök `package.json` önce `backend`’e `npm install` yapar, sonra `node scripts/build.cjs` ile derler — **`tsc` hiç kullanılmaz**).  
+  - **B)** Kök dizin **`backend`** ise → Build: **`npm install && npm run build`** veya **`node scripts/build.cjs`**.  
+- Panelde **`tsc`**, **`nest build`** tek başına yazmayın; “TypeScript derlemesi” seçeneği `tsc` çağırıyorsa kaldırıp yukarıdaki komutlardan birini kullanın.
+- **Başlangıç:** kökten `npm run start --prefix backend` veya `backend` içinde `npm run start:prod` / `node dist/main.js`.
 
 ## 6. CORS
 
 Mobil uygulama ve admin panel farklı domainlerden API’ye istek atacaksa `CORS_ORIGIN` içine bu origin’leri virgülle yazın.
+
+## 6b. Hostinger panel: GitHub içe aktarma (sık görülen ayarlar)
+
+Repoda **iki ayrı uygulama** var; Hostinger’da genelde **iki ayrı Node/Web uygulaması** açmanız gerekir (planınız birden fazla site/uygulamaya izin veriyorsa).
+
+### A) Admin paneli (şu an yaptığınız gibi)
+
+| Alan | Önerilen değer | Not |
+|------|----------------|-----|
+| Framework | **Vite** | `admin/` Vite + React |
+| Dal | `main` | |
+| Kök dizin | **`admin`** | Doğru |
+| Node | 20.x veya **22.x** | İkisi de uygun |
+| Derleme | Varsayılan Vite (`npm run build`) | Çıktı: `admin/dist` |
+| Ortam değişkenleri | **`VITE_API_URL`** | **Zorunlu:** API’nin tam adresi, örn. `https://api.alanadiniz.com/api/v1` veya API için açtığınız Hostinger URL’si. Olmazsa panel `localhost`’a istek atar. |
+
+**Geçici domain** (`*.hostingersite.com`) normaldir; sonra kendi domaininizi bağlarsınız.
+
+### B) REST API (NestJS) — ayrı uygulama
+
+Admin’den **ayrı** bir “Node.js uygulaması” oluşturup:
+
+| Alan | Önerilen değer |
+|------|----------------|
+| Framework | **NestJS** |
+| Kök dizin | **`backend`** |
+| Derleme | `npm ci` (veya panelin yaptığı install) + `npm run build` |
+| Başlatma | `npm run start:prod` veya `node dist/main.js` |
+| Ortam | `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `REDIS_DISABLED=true`, `PORT` (panel atıyorsa ona göre), `CORS_ORIGIN=https://lightcoral-louse-504886.hostingersite.com` (admin geçici URL’niz) + ileride canlı domain |
+
+İlk deploy sonrası SSH veya “Run command” ile bir kez: `npx prisma migrate deploy` ve isteğe bağlı `npm run db:seed`.
+
+**Özet:** Şu anki ayarlar **sadece admin arayüzünü** yayınlar. Mobil uygulama ve admin’in çalışması için **backend**’i de Hostinger’da (ikinci uygulama veya VPS) çalıştırıp `VITE_API_URL` + mobil `API_BASE_URL`’i o API adresine yönlendirin.
+
+---
 
 ## 7. Git ile deploy
 

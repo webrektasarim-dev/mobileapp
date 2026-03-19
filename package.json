@@ -1,0 +1,12 @@
+{
+  "name": "mobileapp",
+  "private": true,
+  "description": "Hostinger: kök dizin burasıysa build backend'i kurar ve derler (tsc PATH gerekmez).",
+  "scripts": {
+    "build": "npm install --prefix backend && npm run build --prefix backend",
+    "start": "npm run start:prod --prefix backend"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -9,7 +9,7 @@ Plan: [docs/STACK_DECISION.md](docs/STACK_DECISION.md) · [OpenAPI](docs/openapi
 - Redis isteğe bağlı (`REDIS_DISABLED=true` ile kapalı)
 - Flutter SDK (mobil geliştirme için)
 
-**Hostinger:** [docs/HOSTINGER.md](docs/HOSTINGER.md)
+**Hostinger önce API:** [docs/HOSTINGER_BACKEND_KURULUM.md](docs/HOSTINGER_BACKEND_KURULUM.md) · Tam akış: [HOSTINGER_BASLANGIC.md](docs/HOSTINGER_BASLANGIC.md)
 
 ## Hızlı başlangıç
 
