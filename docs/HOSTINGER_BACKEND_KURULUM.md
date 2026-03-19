@@ -25,7 +25,9 @@ mysql://KULLANICI:SIFRE@HOST:3306/VERITABANI
 
 ## 2. GitHub
 
-Repo GitHub’da olmalı (örn. `webrektasarim-dev/mobileapp`). Kod güncel olsun (kök `package.json` + `backend/` klasörü).
+- **Monorepo (`mobileapp`):** Admin + mobil + backend aynı repoda ise Hostinger bazen **“desteklenmeyen framework”** verir (repoda birden fazla Node/Flutter projesi taranıyor).  
+  → **Önerilen:** API’yi ayrı repoya taşıyın → **[HOSTINGER_BACKEND_AYRI_REPO.md](./HOSTINGER_BACKEND_AYRI_REPO.md)** (5 dakikada kurulur).
+- Tek repoda denemek istiyorsanız kod güncel olsun; kök veya `backend` kök dizinini deneyin (aşağıda).
 
 ---
 
@@ -41,19 +43,23 @@ Repo GitHub’da olmalı (örn. `webrektasarim-dev/mobileapp`). Kod güncel olsu
 
 ### Derleme (Build)
 
-| Kök dizin | Derleme komutu |
-|-----------|----------------|
-| **Repo kökü** | `npm run build` |
-| **backend** | `npm install && npm run build` |
+**Repo kökü (`./`) + monorepo:** Hostinger bazen yalnızca `npm install` çalıştırır; `build` script’i hiç çalışmaz → `backend/dist/main.js` oluşmaz. Kök `package.json` içinde **`postinstall`** ile her `npm install` sonrası `backend` kurulur ve derlenir; bu yüzden **derleme komutu boş veya `npm install` bile olsa** API derlenir.
 
-Panelde **`tsc`** tek başına veya **`nest build`** zorunlu değil; yukarıdaki yeterli.
+| Kök dizin | Derleme komutu (panel) |
+|-----------|------------------------|
+| **Repo kökü** | `npm install` **veya** `npm run build` (ikisi de backend’i derler) |
+| **backend** (ayrı repo) | `npm install && npm run build` |
+
+Çıktı / giriş: **Output dir ve entry’yi boş bırakın** veya start komutunu kullanın; Nest çıktısı `backend/dist/`.
 
 ### Başlatma (Start)
 
 | Kök dizin | Start komutu |
 |-----------|--------------|
-| **Repo kökü** | `npm run start --prefix backend` |
-| **backend** | `npm run start:prod` veya `node dist/main.js` |
+| **Repo kökü** | **`npm run start:prod`** veya **`node scripts/hostinger-start.cjs`** — `dist` yoksa önce derler. **`node backend/dist/main.js` kullanmayın** (Hostinger bazen derlemeyi atlar). |
+| **backend** (ayrı repo) | `npm run start:prod` veya `node dist/main.js` |
+
+**Node sürümü:** Sorun devam ederse panelde **18.x** deneyin.
 
 ---
 
@@ -117,7 +123,7 @@ https://SENIN-API-DOMAIN/api/v1/categories
 
 | Durum | Ne yap |
 |-------|--------|
-| **Desteklenmeyen framework / geçersiz yapı** | Kök dizini **`backend`** yapıp tekrar deploy et; veya kök dizin repo kökü kalsın (kökte `nest-cli.json` + `@nestjs/core` olmalı). Framework: **NestJS**. |
+| **Desteklenmeyen framework / geçersiz yapı** | Çoğu zaman **monorepo**: Hostinger tüm repoyu tarar. **Kesin çözüm:** [HOSTINGER_BACKEND_AYRI_REPO.md](./HOSTINGER_BACKEND_AYRI_REPO.md) — sadece `backend/` içeriğini ayrı GitHub reposuna itin, Hostinger’da o repoyu bağlayın. Ek olarak `backend/package.json` içinde `file:..` bağımlılığı kaldırıldı; kök dizin **`backend`** + Build `npm install && npm run build` deneyin. |
 | Build hatası (`tsc` vb.) | Build: `npm run build` (kök) veya `backend` kökünde `npm install && npm run build`. |
 | 502 / uygulama düşüyor | `DATABASE_URL` host doğru mu? `PORT` panel ile aynı mı? Logları Hostinger’da aç. |
 | Migration hata | `backend` klasöründe olduğundan emin ol; `DATABASE_URL` ile MySQL’e bağlanabildiğini doğrula. |

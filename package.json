@@ -4,9 +4,10 @@
   "private": true,
   "description": "NestJS API — uygulama kodu backend/ klasöründe (Hostinger framework tespiti)",
   "scripts": {
-    "build": "npm install --prefix backend && npm run build --prefix backend",
-    "start": "npm run start:prod --prefix backend",
-    "start:prod": "node backend/dist/main.js"
+    "postinstall": "node scripts/install-backend.cjs",
+    "build": "node scripts/install-backend.cjs",
+    "start": "node scripts/hostinger-start.cjs",
+    "start:prod": "node scripts/hostinger-start.cjs"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -14,6 +15,6 @@
     "@nestjs/platform-express": "^10.0.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18 <=22"
   }
 }

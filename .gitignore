@@ -8,6 +8,7 @@ node_modules/
 
 # Backend (NestJS)
 backend/dist/
+backend/backend_dist_bak/
 backend/coverage/
 
 # Admin (Vite)
