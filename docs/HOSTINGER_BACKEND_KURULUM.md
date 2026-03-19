@@ -34,8 +34,8 @@ Repo GitHub’da olmalı (örn. `webrektasarim-dev/mobileapp`). Kod güncel olsu
 1. **Websites** → **Node.js** (veya benzeri) → **Uygulama oluştur / Ekle**.
 2. **Git repository** bağla → dal: **`main`**.
 3. **Kök dizin (Root / Application root):**  
-   - **Seçenek A (önerilen):** Boş / **repo kökü** — `mobileapp` kökünde hem `package.json` hem `backend` görünür.  
-   - **Seçenek B:** Kök dizin **`backend`**.
+   - **Seçenek A:** **Repo kökü** (boş / `.`) — kökte `package.json`, `nest-cli.json` ve `backend/` vardır; Hostinger “NestJS” olarak tanır.  
+   - **Seçenek B:** Hâlâ “desteklenmeyen framework” diyorsa kök dizini **`backend`** yapın (içinde `nest-cli.json`, `src/`, `package.json`).
 4. **Node sürümü:** 20.x veya 22.x.
 5. **Framework:** NestJS seçilebiliyorsa seç; asıl önemli build komutu.
 
@@ -117,7 +117,8 @@ https://SENIN-API-DOMAIN/api/v1/categories
 
 | Durum | Ne yap |
 |-------|--------|
-| Build hatası (`tsc` vb.) | Kök + build komutunu §3 tablosuna göre kontrol et; repo’yu push et. |
+| **Desteklenmeyen framework / geçersiz yapı** | Kök dizini **`backend`** yapıp tekrar deploy et; veya kök dizin repo kökü kalsın (kökte `nest-cli.json` + `@nestjs/core` olmalı). Framework: **NestJS**. |
+| Build hatası (`tsc` vb.) | Build: `npm run build` (kök) veya `backend` kökünde `npm install && npm run build`. |
 | 502 / uygulama düşüyor | `DATABASE_URL` host doğru mu? `PORT` panel ile aynı mı? Logları Hostinger’da aç. |
 | Migration hata | `backend` klasöründe olduğundan emin ol; `DATABASE_URL` ile MySQL’e bağlanabildiğini doğrula. |
 
